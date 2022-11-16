@@ -1,0 +1,77 @@
+{% extends 'main.html' %}
+{% block content %}
+{% load post_tags %}
+{% load static %}
+
+<div class="container">
+    <hr>
+    <div class="row">
+        <div class="col-10">
+            <form action="{% url 'home' %}">
+                <input class="form-control border-warning rounded-pill pr-5"
+                       type="text" name="q" style="border: 3px solid;"
+                       placeholder="Search Posts..."/>
+            </form>
+        </div>
+    </div>
+    <hr class="bg-info border-2 border-top border-warning">
+    <button type="button" class="btn btn-success rounded-pill" hx-get="{% url 'create-post2' %}"
+            hx-target="#dialog">
+        Add a post
+    </button>
+    <span>
+            <a class="btn btn-warning rounded-pill" href="{% url 'home' %}">
+                All
+            </a>
+            {% for category in categories %}
+            <a class="btn btn-warning rounded-pill" href="{% url 'home' %}?q={{category.name}}">{{category}}</a>
+            {% endfor %}
+            </span>
+    <hr>
+    <div class="row row-cols-3 g-5">
+        {% for post in posts %}
+        <div class="col mb-4">
+            <div class="card  mb-3 border-light" style="width: 450px; border-radius: 25px;">
+                <div class="card-body" style="border-style: none;">
+                    <img class="rounded-circle"
+                         src="{{post.poster.profile.image.url}}"
+                         height="50px" width="50px"
+                         style="object-fit:cover; object-position: top; border: 3px solid #ffc107 ">
+                    <span>@{{post.poster.username}} {{post.name}}
+                    {% if request.user == post.poster %}
+                    <a class="btn btn-sm btn-primary rounded-pill" href="{% url 'update-post' post.id %}">
+                        <i class="bi bi-pencil"></i>
+                    </a>
+                    <a class="btn btn-sm btn-danger rounded-pill" href="{% url 'delete-post' post.id %}">
+                        <i class="bi bi-trash"></i>
+                    </a>
+                    {% endif %}
+                    </span>
+                </div>
+                {% if post.photo %}
+                <div style="height: 300px; overflow-y: scroll">
+                    <img src="{{ post.photo.url }}" class="card-img-top img-thumbnail">
+                </div>
+                {% endif %}
+                <div class="card-img-top img-thumbnail">{{ maps|get_item:post.id | safe }}</div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">{{ post.description }}</li>
+                    <li class="list-group-item">
+                        Comments:
+                        {% for comment in post.comments.all %}
+                        <div>
+                            <small>@{{comment.user}}: {{comment}}</small>
+                        </div>
+                        {% endfor %}
+                    </li>
+                </ul>
+                <div class="card-body">
+                    <a href="#" class="card-link">Like</a>
+                    <a href="{% url 'create-comment' post.id %}" class="card-link">Comment</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
