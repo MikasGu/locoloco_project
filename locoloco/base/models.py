@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from PIL import Image
 from location_field.models.plain import PlainLocationField
+from mapbox_location_field.models import LocationField
 
 
 class Category(models.Model):
@@ -23,8 +24,7 @@ class Post(models.Model):
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
     poster = models.ForeignKey(User, on_delete=models.CASCADE)
     photo = models.ImageField(null=True, blank=True, upload_to='images/', default='images/img.png')
-
-    location = PlainLocationField(zoom=7, default='54.6878,25.2797')
+    location = LocationField()
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)

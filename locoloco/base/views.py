@@ -74,7 +74,8 @@ def home(request):
     post_form = PostForm()
 
     def split_location_string(post_location):
-        coords_list = list(post_location.split(','))
+        coords_list = list(post_location)
+        coords_list.reverse()
         return coords_list
 
     maps = {}
@@ -91,12 +92,15 @@ def home(request):
         m = m._repr_html_()
         maps.update({post.id: m})
 
+    form = PostForm()
+
     context = {'posts': posts,
                'categories': categories,
                'comment_form': comment_form,
                'post_form': post_form,
                'maps': maps,
-               'ip': ip}
+               'ip': ip,
+               'form': form}
     return render(request, 'base/home.html', context)
 
 
@@ -114,6 +118,7 @@ def post(request, pk):
     return render(request, 'base/post.html', context)
 
 
+@login_required(login_url='login')
 def create_post2(request):
     form = PostForm()
     if request.method == 'POST':

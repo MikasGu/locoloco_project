@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'base.apps.BaseConfig',
     'tinymce',
     'location_field.apps.DefaultConfig',
+    'crispy_forms',
+    "mapbox_location_field",
 ]
 
 MIDDLEWARE = [
@@ -62,13 +64,19 @@ TEMPLATES = [
         'DIRS': [
             BASE_DIR / 'templates'
         ],
-        'APP_DIRS': True,
+        'APP_DIRS': False,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+            ],
+            'loaders': [
+                ('django.template.loaders.cached.Loader', [
+                    'django.template.loaders.filesystem.Loader',
+                    'django.template.loaders.app_directories.Loader',
+                ]),
             ],
         },
     },
@@ -150,3 +158,5 @@ LOCATION_FIELD = {
         ),
     },
 }
+
+MAPBOX_KEY = "pk.eyJ1IjoibWlrYXNndSIsImEiOiJjbGFqbWV0MmowZTYwM25zOWVudmRsZzJqIn0.8c8Z_95paOrvaa0bAZARVg"
