@@ -29,16 +29,18 @@
             {% endfor %}
             </span>
     <hr>
-    <div class="row row-cols-3 g-5">
-        {% for post in posts %}
-        <div class="col mb-4">
-            <div class="card  mb-3 border-light" style="width: 450px; border-radius: 25px;">
-                <div class="card-body" style="border-style: none;">
-                    <img class="rounded-circle"
-                         src="{{post.poster.profile.image.url}}"
-                         height="50px" width="50px"
-                         style="object-fit:cover; object-position: top; border: 3px solid #ffc107 ">
-                    <span>@{{post.poster.username}} {{post.name}}
+
+    <div class="row">
+        <div class="col-lg-6 mb-4">
+            {% for post in posts %}
+            <div class="mb-4">
+                <div class="card  mb-3 border-light" style="width: 450px; border-radius: 25px;">
+                    <div class="card-body" style="border-style: none;">
+                        <img class="rounded-circle"
+                             src="{{post.poster.profile.image.url}}"
+                             height="50px" width="50px"
+                             style="object-fit:cover; object-position: top; border: 3px solid #ffc107 ">
+                        <span>@{{post.poster.username}} {{post.name}}
                     {% if request.user == post.poster %}
                     <button class="btn btn-sm btn-primary rounded-pill" hx-get="{% url 'update-post' post.id %}"
                             hx-target="#dialog">
@@ -49,43 +51,53 @@
                     </a>
                     {% endif %}
                     </span>
-                </div>
-                {% if post.photo %}
-                <div style="height: 300px; overflow-y: scroll">
-                    <img src="{{ post.photo.url }}" class="card-img-top img-thumbnail">
-                </div>
-                {% endif %}
-                <div class="card-img-top img-thumbnail">{{ maps|get_item:post.id | safe }}</div>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item text-right font-italic"><small>posted {{ post.updated | timesince }}
-                        ago</small></li>
-                    <li class="list-group-item">{{ post.description }}</li>
-                    <li class="list-group-item">
-                        Comments:
-                        {% for comment in post.comments.all %}
-                        <div>
-                            <small>
-                                <img class="rounded-circle"
-                                     src="{{comment.user.profile.image.url}}"
-                                     height="20px" width="20px"
-                                     style="object-fit:cover; object-position: top;">
-                                @{{comment.user}}: {{comment}}
-                            </small>
-                        </div>
-                        {% endfor %}
-                    </li>
-                </ul>
-                <div class="card-body">
-                    <a href="#" class="card-link">Like</a>
-                    <a href="{% url 'create-comment' post.id %}" class="card-link">Comment</a>
+                    </div>
+                    {% if post.photo %}
+                    <div style="height: 300px; overflow-y: scroll">
+                        <img src="{{ post.photo.url }}" class="card-img-top img-thumbnail">
+                    </div>
+                    {% endif %}
+                    <div class="card-img-top img-thumbnail">{{ maps|get_item:post.id | safe }}</div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item text-right font-italic"><small>posted {{ post.updated | timesince }}
+                            ago</small></li>
+                        <li class="list-group-item">{{ post.description }}</li>
+                        <li class="list-group-item">
+                            Comments:
+                            {% for comment in post.comments.all %}
+                            <div>
+                                <small>
+                                    <img class="rounded-circle"
+                                         src="{{comment.user.profile.image.url}}"
+                                         height="25px" width="25px"
+                                         style="object-fit:cover; object-position: top;">
+                                    @{{comment.user}}: {{comment}}
+                                </small>
+                            </div>
+                            {% endfor %}
+                        </li>
+                    </ul>
+                    <div class="card-body">
+                        <a href="#" class="card-link">Like</a>
+                        <button class="btn btn-sm btn-primary rounded-pill" hx-get="{% url 'create-comment' post.id %}"
+                                hx-target="#dialog">
+                            Comment
+                        </button>
+                    </div>
                 </div>
             </div>
+            {% endfor %}
         </div>
-        {% endfor %}
-        <div id="modal" class="modal fade">
-            <div id="dialog" class="modal-dialog modal-md" hx-target="this"></div>
-            <script src="{% static 'dialog.js' %}"></script>
+        <div class="col-lg-6 mb-4">
+            <div class="container" style="width: 500px; height: 900px;">
+                {{ full_map | safe }}
+            </div>
         </div>
+    </div>
+
+    <div id="modal" class="modal fade">
+        <div id="dialog" class="modal-dialog modal-md" hx-target="this"></div>
+        <script src="{% static 'dialog.js' %}"></script>
     </div>
 </div>
 {% endblock %}

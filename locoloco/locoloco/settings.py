@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'location_field.apps.DefaultConfig',
     'crispy_forms',
     "mapbox_location_field",
+    'emoji_picker',
 ]
 
 MIDDLEWARE = [

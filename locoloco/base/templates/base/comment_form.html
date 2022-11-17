@@ -1,13 +1,17 @@
-{% extends 'main.html' %}
+{% load crispy_forms_tags %}
 
-{% block content %}
-
-{% if request.user.is_authenticated %}
-<form method="POST" action="">
-    {% csrf_token %}
-    {{comment_form.as_p}}
-    <input type="submit">
+<body>
+<form hx-post="{{ request.path }}" style="border-radius: 25px;" class="modal-content" enctype="multipart/form-data">
+    <div class="modal-header">
+        <h5 class="modal-title">Comment</h5>
+    </div>
+    <div class="modal-body">
+        {% csrf_token %}
+        {{ comment_form | crispy }}
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-danger rounded-pill" data-bs-dismiss="modal">Cancel</button>
+        <button type="submit" class="btn btn-sm btn-success rounded-pill">Save</button>
+    </div>
 </form>
-{% endif %}
-
-{% endblock %}
+</body>

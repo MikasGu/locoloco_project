@@ -94,11 +94,26 @@ def home(request):
 
     form = PostForm()
 
+    m2 = folium.Map(width=600,
+                    height=1000,
+                    location=[54.68, 25.27],
+                    zoom_start=5,
+                    tiles='cartodbdark_matter',
+                    attr='Mapbox attribution',
+                    control_scale=True,
+                    attributionControl=False)
+    for post in posts:
+        folium.Marker(split_location_string(post.location),
+                  popup=post.location).add_to(m2)
+
+    m2 = m2._repr_html_()
+
     context = {'posts': posts,
                'categories': categories,
                'comment_form': comment_form,
                'post_form': post_form,
                'maps': maps,
+               'full_map': m2,
                'ip': ip,
                'form': form}
     return render(request, 'base/home.html', context)
@@ -179,7 +194,7 @@ def create_comment(request, pk):
         form = CommentForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('home')
+            return HttpResponse(status=204)
 
     context = {'comment_form': form}
     return render(request, 'base/comment_form.html', context)
