@@ -14,10 +14,12 @@
         </div>
     </div>
     <hr class="bg-info border-2 border-top border-warning">
+    {% if user.is_authenticated %}
     <button type="button" class="btn btn-success rounded-pill" hx-get="{% url 'create-post2' %}"
             hx-target="#dialog">
         Add a post
     </button>
+    {% endif %}
     <span>
             <a class="btn btn-warning rounded-pill" href="{% url 'home' %}">
                 All
@@ -38,9 +40,10 @@
                          style="object-fit:cover; object-position: top; border: 3px solid #ffc107 ">
                     <span>@{{post.poster.username}} {{post.name}}
                     {% if request.user == post.poster %}
-                    <a class="btn btn-sm btn-primary rounded-pill" href="{% url 'update-post' post.id %}">
+                    <button class="btn btn-sm btn-primary rounded-pill" hx-get="{% url 'update-post' post.id %}"
+                            hx-target="#dialog">
                         <i class="bi bi-pencil"></i>
-                    </a>
+                    </button>
                     <a class="btn btn-sm btn-danger rounded-pill" href="{% url 'delete-post' post.id %}">
                         <i class="bi bi-trash"></i>
                     </a>
@@ -54,12 +57,20 @@
                 {% endif %}
                 <div class="card-img-top img-thumbnail">{{ maps|get_item:post.id | safe }}</div>
                 <ul class="list-group list-group-flush">
+                    <li class="list-group-item text-right font-italic"><small>posted {{ post.updated | timesince }}
+                        ago</small></li>
                     <li class="list-group-item">{{ post.description }}</li>
                     <li class="list-group-item">
                         Comments:
                         {% for comment in post.comments.all %}
                         <div>
-                            <small>@{{comment.user}}: {{comment}}</small>
+                            <small>
+                                <img class="rounded-circle"
+                                     src="{{comment.user.profile.image.url}}"
+                                     height="20px" width="20px"
+                                     style="object-fit:cover; object-position: top;">
+                                @{{comment.user}}: {{comment}}
+                            </small>
                         </div>
                         {% endfor %}
                     </li>

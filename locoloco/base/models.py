@@ -18,13 +18,16 @@ class Category(models.Model):
 
 class Post(models.Model):
     name = models.CharField(max_length=100)
-    description = models.TextField(null=True, blank=True)
+    description = models.CharField(max_length=100, null=True, blank=True)
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
     poster = models.ForeignKey(User, on_delete=models.CASCADE)
     photo = models.ImageField(null=True, blank=True, upload_to='images/', default='images/img.png')
-    location = LocationField()
+    location = LocationField(map_attrs={'center': [25.2797, 54.6872],
+                                        'marker_color': "orange",
+                                        'readonly': False,
+                                        'style': "mapbox://styles/mapbox/dark-v10"})
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)

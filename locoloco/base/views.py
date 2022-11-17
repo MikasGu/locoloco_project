@@ -120,7 +120,7 @@ def post(request, pk):
 
 @login_required(login_url='login')
 def create_post2(request):
-    form = PostForm()
+    form = PostForm(initial={'poster': request.user})
     if request.method == 'POST':
         form = PostForm(request.POST, request.FILES)
         if form.is_valid():
@@ -154,9 +154,9 @@ def update_post(request, pk):
         form = PostForm(request.POST, request.FILES, instance=post_instance)
         if form.is_valid():
             form.save()
-            return redirect('home')
+            return HttpResponse(status=204)
     context = {'form': form}
-    return render(request, 'base/post_form.html', context)
+    return render(request, 'base/post_form2.html', context)
 
 
 @login_required(login_url='login')
