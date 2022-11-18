@@ -84,7 +84,8 @@ def home(request):
                        height=263,
                        location=split_location_string(post.location),
                        zoom_start=15,
-                       tiles='cartodbdark_matter',
+                       tiles='https://tile.thunderforest.com/mobile-atlas/{z}/{x}/{y}.png?apikey=a5928b37b24b4d5fba800722daa1c9aa',
+                       attr='s',
                        control_scale=True,
                        attributionControl=False)
         folium.Marker(split_location_string(post.location),
@@ -94,17 +95,16 @@ def home(request):
 
     form = PostForm()
 
-    m2 = folium.Map(width=600,
-                    height=1000,
-                    location=[54.68, 25.27],
-                    zoom_start=5,
-                    tiles='cartodbdark_matter',
-                    attr='Mapbox attribution',
-                    control_scale=True,
-                    attributionControl=False)
+    m2 = folium.Map(
+        location=[54.68, 25.27],
+        zoom_start=5,
+        tiles='https://tile.thunderforest.com/mobile-atlas/{z}/{x}/{y}.png?apikey=a5928b37b24b4d5fba800722daa1c9aa',
+        attr='s',
+        control_scale=True,
+        attributionControl=True)
     for post in posts:
         folium.Marker(split_location_string(post.location),
-                  popup=post.location).add_to(m2)
+                      popup=post.location).add_to(m2)
 
     m2 = m2._repr_html_()
 
@@ -122,8 +122,8 @@ def home(request):
 def post(request, pk):
     post_instance = Post.objects.get(id=pk)
 
-    m = folium.Map(width=200,
-                   height=200,
+    m = folium.Map(width=800,
+                   height=800,
                    location=[54.68, 25.27],
                    zoom_start=12)
     folium.Marker([post_instance.latitude, post_instance.longitude]).add_to(m)
