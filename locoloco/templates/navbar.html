@@ -1,30 +1,35 @@
+{% load static %}
 <div class="container">
     <div class="sidenav">
         {% if request.user.is_authenticated %}
-
-        <a href="">
-            <span>
-            <img class="rounded-circle"
-                 src="{{request.user.profile.image.url}}"
-                 height="50px" width="50px"
-                 style="object-fit:cover; object-position: top; border: 3px solid #ffc107 ">
-             </span>
-            Hi, {{request.user}}
+        <img class="rounded-circle"
+             src="{{request.user.profile.image.url}}"
+             height="50px" width="50px"
+             style="object-fit:cover;
+             object-position: top;
+             border: 3px solid #ffc107; margin-left:5px;">
+        <hr>
+        <a href="#" data-toggle="tooltip" data-placement="right" title="Hi, {{request.user}}!">
+            <i class="bi bi-person-square"></i>
         </a>
         <hr>
-        <a href="{% url 'logout' %}">Logout</a>
+        <a href="{% url 'logout' %}" data-toggle="tooltip" data-placement="right" title="Logout">
+            <i class="bi bi-box-arrow-left text-danger"></i>
+        </a>
         <hr>
         {% else %}
-        <a href="{% url 'login' %}">Login</a>
+        <a href="{% url 'login' %}" data-toggle="tooltip" data-placement="top" title="Log in">
+            <i class="bi bi-box-arrow-in-right text-success"></i>
+        </a>
         <hr>
         {% endif %}
-        <a href="{% url 'home' %}">Home</a>
+        <a href="{% url 'home' %}" data-toggle="tooltip" data-placement="top" title="Home">
+            <i class="bi bi-house-fill"></i>
+        </a>
         <hr>
-        <a href="{% url 'create-post' %}">Create</a>
-        <hr>
-        <a href="">Link</a>
-        <hr>
-        <a href="">Link</a>
-        <hr>
+        <a data-toggle="tooltip" data-placement="top" title="Create post" hx-get="{% url 'create-post2' %}"
+            hx-target="#dialog">
+            <i class="bi bi-pencil"></i>
+        </a>
     </div>
 </div>

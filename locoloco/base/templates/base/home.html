@@ -2,10 +2,10 @@
 {% block content %}
 {% load post_tags %}
 {% load static %}
-<div class="container">
+<div class="container-fluid">
     <hr>
     <div class="row">
-        <div class="col-10">
+        <div class="col">
             <form action="{% url 'home' %}">
                 <input class="form-control border-warning rounded-pill pr-5"
                        type="text" name="q" style="border: 3px solid;"
@@ -34,7 +34,7 @@
         <div class="col-lg-6 mb-4">
             {% for post in posts %}
             <div class="mb-4">
-                <div class="card  mb-3 border-light" style="width: 450px; border-radius: 25px;">
+                <div class="card border-light" style="width: 450px; border-radius: 25px;">
                     <div class="card-body" style="border-style: none;">
                         <img class="rounded-circle"
                              src="{{post.poster.profile.image.url}}"

@@ -89,7 +89,9 @@ def home(request):
                        control_scale=True,
                        attributionControl=False)
         folium.Marker(split_location_string(post.location),
-                      popup=post.name).add_to(m)
+                      popup=post.name,
+                      icon=folium.Icon(color='orange')).add_to(m)
+
         m = m._repr_html_()
         maps.update({post.id: m})
 
@@ -97,14 +99,15 @@ def home(request):
 
     m2 = folium.Map(
         location=[54.68, 25.27],
-        zoom_start=5,
+        zoom_start=13,
         tiles='https://tile.thunderforest.com/mobile-atlas/{z}/{x}/{y}.png?apikey=a5928b37b24b4d5fba800722daa1c9aa',
         attr='s',
         control_scale=True,
         attributionControl=True)
     for post in posts:
         folium.Marker(split_location_string(post.location),
-                      popup=post.location).add_to(m2)
+                      popup=f'<img src="media/{post.photo}" style="height: 100px;">',
+                      icon=folium.Icon(color='orange')).add_to(m2)
 
     m2 = m2._repr_html_()
 
