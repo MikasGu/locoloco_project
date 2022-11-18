@@ -106,7 +106,9 @@ def home(request):
         attributionControl=True)
     for post in posts:
         folium.Marker(split_location_string(post.location),
-                      popup=f'<img src="media/{post.photo}" style="height: 100px;">',
+                      popup=
+                      f'<img src="media/{post.photo}" style="height: 100px;">'
+                      f'<p>{post.name}</p>',
                       icon=folium.Icon(color='orange')).add_to(m2)
 
     m2 = m2._repr_html_()

@@ -21,17 +21,17 @@
     </button>
     {% endif %}
     <span>
-            <a class="btn btn-warning rounded-pill" href="{% url 'home' %}">
-                All
-            </a>
-            {% for category in categories %}
-            <a class="btn btn-warning rounded-pill" href="{% url 'home' %}?q={{category.name}}">{{category}}</a>
-            {% endfor %}
-            </span>
+    <a class="btn btn-warning rounded-pill" href="{% url 'home' %}">
+        All
+    </a>
+    {% for category in categories %}
+    <a class="btn btn-warning rounded-pill" href="{% url 'home' %}?q={{category.name}}">{{category}}</a>
+    {% endfor %}
+    </span>
     <hr>
 
     <div class="row">
-        <div class="col-lg-6 mb-4">
+        <div class="col-lg-5 mb-4">
             {% for post in posts %}
             <div class="mb-4">
                 <div class="card border-light" style="width: 450px; border-radius: 25px;">
@@ -88,10 +88,8 @@
             </div>
             {% endfor %}
         </div>
-        <div class="col-lg-6 mb-4">
-            <div class="container">
-                {{ full_map | safe }}
-            </div>
+        <div class="border border-warning" style="width: 750px; height: 451px;">
+            {{ full_map | safe }}
         </div>
     </div>
 

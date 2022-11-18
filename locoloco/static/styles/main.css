@@ -6,8 +6,8 @@
     top:0;
     left:0;
     background-color:#E4A11B;
-    overflow-x: :hidden;
-    padding-top:80px;
+    overflow-x:hidden;
+    padding-top:10px;
     padding-left:10px;
     font-family: "Lucida Console", "Courier New", monospace;
 }

@@ -1,6 +1,10 @@
 {% load static %}
 <div class="container">
     <div class="sidenav">
+        <a href="{% url 'home' %}" data-toggle="tooltip" data-placement="top" title="Home">
+            <i class="bi bi-house-fill"></i>
+        </a>
+        <hr>
         {% if request.user.is_authenticated %}
         <img class="rounded-circle"
              src="{{request.user.profile.image.url}}"
@@ -23,11 +27,7 @@
         </a>
         <hr>
         {% endif %}
-        <a href="{% url 'home' %}" data-toggle="tooltip" data-placement="top" title="Home">
-            <i class="bi bi-house-fill"></i>
-        </a>
-        <hr>
-        <a data-toggle="tooltip" data-placement="top" title="Create post" hx-get="{% url 'create-post2' %}"
+        <a href="#" data-toggle="tooltip" data-placement="top" title="Create post" hx-get="{% url 'create-post2' %}"
             hx-target="#dialog">
             <i class="bi bi-pencil"></i>
         </a>
