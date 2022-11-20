@@ -13,23 +13,29 @@
              object-position: top;
              border: 3px solid #ffc107; margin-left:5px;">
         <hr>
-        <a href="#" data-toggle="tooltip" data-placement="right" title="Hi, {{request.user}}!">
+        <a href="#" data-toggle="tooltip" title="Hi, {{request.user}}!">
             <i class="bi bi-person-square"></i>
         </a>
         <hr>
-        <a href="{% url 'logout' %}" data-toggle="tooltip" data-placement="right" title="Logout">
+        <a href="{% url 'logout' %}" data-toggle="tooltip" title="Logout">
             <i class="bi bi-box-arrow-left text-danger"></i>
         </a>
         <hr>
+        <a href="#" data-toggle="tooltip" title="Create post" hx-get="{% url 'create-post' %}"
+           hx-target="#dialog">
+            <i class="bi bi-pencil"></i>
+        </a>
         {% else %}
-        <a href="{% url 'login' %}" data-toggle="tooltip" data-placement="top" title="Log in">
+        <a href="" data-toggle="tooltip" title="Log in" hx-get="{% url 'login' %}"
+           hx-target="#dialog">
             <i class="bi bi-box-arrow-in-right text-success"></i>
         </a>
         <hr>
-        {% endif %}
-        <a href="#" data-toggle="tooltip" data-placement="top" title="Create post" hx-get="{% url 'create-post2' %}"
-            hx-target="#dialog">
-            <i class="bi bi-pencil"></i>
+        <a href="" data-toggle="tooltip" title="Register" hx-get="{% url 'register' %}"
+           hx-target="#dialog">
+            <i class="bi bi-person-plus-fill"></i>
         </a>
+        <hr>
+        {% endif %}
     </div>
 </div>

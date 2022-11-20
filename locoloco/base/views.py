@@ -29,7 +29,7 @@ def login_page(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('home')
+            return HttpResponse(status=204)
         else:
             messages.error(request, 'Username or password does not exist')
     context = {'page': page}
@@ -124,22 +124,8 @@ def home(request):
     return render(request, 'base/home.html', context)
 
 
-def post(request, pk):
-    post_instance = Post.objects.get(id=pk)
-
-    m = folium.Map(width=800,
-                   height=800,
-                   location=[54.68, 25.27],
-                   zoom_start=12)
-    folium.Marker([post_instance.latitude, post_instance.longitude]).add_to(m)
-    m = m._repr_html_()
-
-    context = {'post': post_instance, 'm': m}
-    return render(request, 'base/post.html', context)
-
-
 @login_required(login_url='login')
-def create_post2(request):
+def create_post(request):
     form = PostForm(initial={'poster': request.user})
     if request.method == 'POST':
         form = PostForm(request.POST, request.FILES)
@@ -148,18 +134,6 @@ def create_post2(request):
             return HttpResponse(status=204)
     context = {'form': form}
     return render(request, 'base/post_form2.html', context)
-
-
-@login_required(login_url='login')
-def create_post(request):
-    form = PostForm()
-    if request.method == 'POST':
-        form = PostForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            return redirect('home')
-    context = {'form': form}
-    return render(request, 'base/post_form.html', context)
 
 
 @login_required(login_url='login')

@@ -8,25 +8,25 @@
         <div class="col">
             <form action="{% url 'home' %}">
                 <input class="form-control border-warning rounded-pill pr-5"
-                       type="text" name="q" style="border: 3px solid;"
+                       type="text" name="q" style="border: 3px solid; background-color:black;"
                        placeholder="Search Posts..."/>
             </form>
         </div>
     </div>
     <hr class="bg-info border-2 border-top border-warning">
     {% if user.is_authenticated %}
-    <button type="button" class="btn btn-success rounded-pill" hx-get="{% url 'create-post2' %}"
+    <button type="button" class="btn btn-success rounded-pill" hx-get="{% url 'create-post' %}"
             hx-target="#dialog">
         Add a post
     </button>
     {% endif %}
     <span>
-    <a class="btn btn-warning rounded-pill" href="{% url 'home' %}">
-        All
-    </a>
-    {% for category in categories %}
-    <a class="btn btn-warning rounded-pill" href="{% url 'home' %}?q={{category.name}}">{{category}}</a>
-    {% endfor %}
+        <a class="btn btn-warning rounded-pill" href="{% url 'home' %}">
+            All
+        </a>
+        {% for category in categories %}
+        <a class="btn btn-warning rounded-pill" href="{% url 'home' %}?q={{category.name}}">{{category}}</a>
+        {% endfor %}
     </span>
     <hr>
 
@@ -88,7 +88,7 @@
             </div>
             {% endfor %}
         </div>
-        <div class="border border-warning" style="width: 750px; height: 451px;">
+        <div class="border border-warning" style="width: 650px; height: 391px;">
             {{ full_map | safe }}
         </div>
     </div>

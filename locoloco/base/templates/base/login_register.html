@@ -1,33 +1,49 @@
-{% extends 'main.html' %}
-
-{% block content %}
-
+{% load crispy_forms_tags %}
 {% if page == 'login' %}
-<div>
-    <form method="POST" action="">
-        {% csrf_token %}
-
-        <label>Username: </label>
-        <input type="text" name="username" placeholder="Enter Username">
-
-        <label>Password: </label>
-        <input type="password" name="password" placeholder="Enter Password">
-
-        <input type="submit" value="Login">
-    </form>
-
-    <p>Haven't signed up yet?</p>
-    <a href="{% url 'register' %}">Sign up</a>
-</div>
+<form hx-post="{{ request.path }}" style="border-radius: 25px;" class="modal-content" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="modal-header">
+        <h5 class="modal-title">Log in</h5>
+    </div>
+    <div class="modal-body">
+        <div class="container">
+            <label>Username: </label>
+            <input type="text" name="username" placeholder="Enter Username">
+        </div>
+        <div class="container">
+            <label>Password: </label>
+            <input type="password" name="password" placeholder="Enter Password">
+        </div>
+        <div class="container">
+            <input type="submit" value="Login" class="btn btn-md btn-success rounded-pill">
+        </div>
+        <br>
+        <div class="container">
+            <p>Haven't signed up yet?</p>
+            <a href="#" hx-get="{% url 'register' %}"
+               hx-target="#dialog">Sign up</a>
+        </div>
+    </div>
+</form>
 {% else %}
-<div>
-    <form method="POST" action="">
+<form hx-post="{{ request.path }}" style="border-radius: 25px;" class="modal-content" enctype="multipart/form-data">
+    <div class="modal-header">
+        <h5 class="modal-title">Register</h5>
+    </div>
+    <div class="modal-body">
         {% csrf_token %}
-        {{form.as_p}}
-        <input type="submit" value="Register">
-    </form>
-    <p>Already have an account?</p>
-    <a href="{% url 'login' %}">Login</a>
-</div>
+        {{form | crispy}}
+    </div>
+    <div class="container">
+        <span>
+        <input type="submit" value="Register" class="btn btn-md btn-success rounded-pill">
+             Already have an account?
+            <a href="#" hx-get="{% url 'login' %}"
+               hx-target="#dialog">
+                Login
+            </a>
+        </span>
+    </div>
+    <br>
+</form>
 {% endif %}
-{% endblock %}
