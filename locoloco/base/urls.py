@@ -14,4 +14,5 @@ urlpatterns = [
     path('delete-post/<str:pk>', views.delete_post, name='delete-post'),
 
     path('create-comment/<str:pk>', views.create_comment, name='create-comment'),
+    path('like/<str:pk>', views.like_post, name='like_post'),
 ]

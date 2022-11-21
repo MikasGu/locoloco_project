@@ -41,7 +41,6 @@ INSTALLED_APPS = [
 
     'base.apps.BaseConfig',
     'tinymce',
-    'location_field.apps.DefaultConfig',
     'crispy_forms',
     "mapbox_location_field",
     'emoji_picker',
@@ -161,3 +160,4 @@ LOCATION_FIELD = {
 }
 
 MAPBOX_KEY = "pk.eyJ1IjoibWlrYXNndSIsImEiOiJjbGFqbWV0MmowZTYwM25zOWVudmRsZzJqIn0.8c8Z_95paOrvaa0bAZARVg"
+

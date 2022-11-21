@@ -5,6 +5,7 @@ from location_field.models.plain import PlainLocationField
 from mapbox_location_field.models import LocationField
 
 
+
 class Category(models.Model):
     name = models.CharField(max_length=100)
 
@@ -23,6 +24,7 @@ class Post(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
     poster = models.ForeignKey(User, on_delete=models.CASCADE)
+    likes = models.ManyToManyField(User, blank=True, related_name="collected_votes")
     photo = models.ImageField(null=True, blank=True, upload_to='images/', default='images/img.png')
     location = LocationField(map_attrs={'center': [25.2797, 54.6872],
                                         'marker_color': "orange",

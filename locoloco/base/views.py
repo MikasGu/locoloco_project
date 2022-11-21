@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from .models import Post, Category
+from .models import Post, Category, Profile
 from .forms import PostForm, CommentForm
 from django.db.models import Q
 from django.contrib.auth.models import User
@@ -29,7 +29,7 @@ def login_page(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return HttpResponse(status=204)
+            return HttpResponse(status=200, headers={'HX-Trigger': 'postListChanged'})
         else:
             messages.error(request, 'Username or password does not exist')
     context = {'page': page}
@@ -49,8 +49,11 @@ def register_page(request):
             user = form.save(commit=False)
             user.username = user.username.lower()
             user.save()
+            profile = Profile()
+            profile.user = user
+            profile.save()
             login(request, user)
-            return redirect('home')
+            return HttpResponse(status=204, headers={'HX-Trigger': 'postListChanged'})
         else:
             messages.error(request, 'An error occurred during registration')
     context = {'form': form}
@@ -88,9 +91,24 @@ def home(request):
                        attr='s',
                        control_scale=True,
                        attributionControl=False)
-        folium.Marker(split_location_string(post.location),
-                      popup=post.name,
-                      icon=folium.Icon(color='orange')).add_to(m)
+        if post.category_id == 1:
+            folium.Marker(split_location_string(post.location),
+                          popup=
+                          f'<img src="media/{post.photo}" style="height: 100px;">'
+                          f'<p>{post.name}</p>',
+                          icon=folium.Icon(color='blue', icon='trophy', prefix='fa')).add_to(m)
+        if post.category_id == 2:
+            folium.Marker(split_location_string(post.location),
+                          popup=
+                          f'<img src="media/{post.photo}" style="height: 100px;">'
+                          f'<p>{post.name}</p>',
+                          icon=folium.Icon(color='green', icon='university', prefix='fa')).add_to(m)
+        if post.category_id == 3:
+            folium.Marker(split_location_string(post.location),
+                          popup=
+                          f'<img src="media/{post.photo}" style="height: 100px;">'
+                          f'<p>{post.name}</p>',
+                          icon=folium.Icon(color='red', icon='paint-brush', prefix='fa')).add_to(m)
 
         m = m._repr_html_()
         maps.update({post.id: m})
@@ -105,11 +123,24 @@ def home(request):
         control_scale=True,
         attributionControl=True)
     for post in posts:
-        folium.Marker(split_location_string(post.location),
-                      popup=
-                      f'<img src="media/{post.photo}" style="height: 100px;">'
-                      f'<p>{post.name}</p>',
-                      icon=folium.Icon(color='orange')).add_to(m2)
+        if post.category_id == 1:
+            folium.Marker(split_location_string(post.location),
+                          popup=
+                          f'<img src="media/{post.photo}" style="height: 100px;">'
+                          f'<p>{post.name}</p>',
+                          icon=folium.Icon(color='blue', icon='trophy', prefix='fa')).add_to(m2)
+        if post.category_id == 2:
+            folium.Marker(split_location_string(post.location),
+                          popup=
+                          f'<img src="media/{post.photo}" style="height: 100px;">'
+                          f'<p>{post.name}</p>',
+                          icon=folium.Icon(color='green', icon='university', prefix='fa')).add_to(m2)
+        if post.category_id == 3:
+            folium.Marker(split_location_string(post.location),
+                          popup=
+                          f'<img src="media/{post.photo}" style="height: 100px;">'
+                          f'<p>{post.name}</p>',
+                          icon=folium.Icon(color='red', icon='paint-brush', prefix='fa')).add_to(m2)
 
     m2 = m2._repr_html_()
 
@@ -131,7 +162,7 @@ def create_post(request):
         form = PostForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            return HttpResponse(status=204)
+            return HttpResponse(status=204, headers={'HX-Trigger': 'postListChanged'})
     context = {'form': form}
     return render(request, 'base/post_form2.html', context)
 
@@ -148,7 +179,7 @@ def update_post(request, pk):
         form = PostForm(request.POST, request.FILES, instance=post_instance)
         if form.is_valid():
             form.save()
-            return HttpResponse(status=204)
+            return HttpResponse(status=204, headers={'HX-Trigger': 'postListChanged'})
     context = {'form': form}
     return render(request, 'base/post_form2.html', context)
 
@@ -173,7 +204,20 @@ def create_comment(request, pk):
         form = CommentForm(request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponse(status=204)
+            return HttpResponse(status=204, headers={'HX-Trigger': 'postListChanged'})
 
     context = {'comment_form': form}
     return render(request, 'base/comment_form.html', context)
+
+
+def like_post(request, pk):
+    if request.method == "POST":
+        instance = Post.objects.get(id=pk)
+        if not instance.likes.filter(id=request.user.id).exists():
+            instance.likes.add(request.user)
+            instance.save()
+            return render(request, 'base/likes_area.html', context={'post': instance})
+        else:
+            instance.likes.remove(request.user)
+            instance.save()
+            return render(request, 'base/likes_area.html', context={'post': instance})

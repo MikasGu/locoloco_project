@@ -2,36 +2,10 @@
 {% block content %}
 {% load post_tags %}
 {% load static %}
-<div class="container-fluid">
-    <hr>
+<div class="container-fluid ">
+    <br>
     <div class="row">
-        <div class="col">
-            <form action="{% url 'home' %}">
-                <input class="form-control border-warning rounded-pill pr-5"
-                       type="text" name="q" style="border: 3px solid; background-color:black;"
-                       placeholder="Search Posts..."/>
-            </form>
-        </div>
-    </div>
-    <hr class="bg-info border-2 border-top border-warning">
-    {% if user.is_authenticated %}
-    <button type="button" class="btn btn-success rounded-pill" hx-get="{% url 'create-post' %}"
-            hx-target="#dialog">
-        Add a post
-    </button>
-    {% endif %}
-    <span>
-        <a class="btn btn-warning rounded-pill" href="{% url 'home' %}">
-            All
-        </a>
-        {% for category in categories %}
-        <a class="btn btn-warning rounded-pill" href="{% url 'home' %}?q={{category.name}}">{{category}}</a>
-        {% endfor %}
-    </span>
-    <hr>
-
-    <div class="row">
-        <div class="col-lg-5 mb-4">
+        <div class="col order-xl-1 order-lg-2 order-md-2 order-sm-2">
             {% for post in posts %}
             <div class="mb-4">
                 <div class="card border-light" style="width: 450px; border-radius: 25px;">
@@ -40,7 +14,7 @@
                              src="{{post.poster.profile.image.url}}"
                              height="50px" width="50px"
                              style="object-fit:cover; object-position: top; border: 3px solid #ffc107 ">
-                        <span>@{{post.poster.username}} {{post.name}}
+                        <span>@{{post.poster.username}}
                     {% if request.user == post.poster %}
                     <button class="btn btn-sm btn-primary rounded-pill" hx-get="{% url 'update-post' post.id %}"
                             hx-target="#dialog">
@@ -50,7 +24,8 @@
                         <i class="bi bi-trash"></i>
                     </a>
                     {% endif %}
-                    </span>
+                            <small>{{ post.updated | timesince }} ago</small>
+                        </span>
                     </div>
                     {% if post.photo %}
                     <div style="height: 300px; overflow-y: scroll">
@@ -59,11 +34,8 @@
                     {% endif %}
                     <div class="card-img-top img-thumbnail">{{ maps|get_item:post.id | safe }}</div>
                     <ul class="list-group list-group-flush">
-                        <li class="list-group-item text-right font-italic"><small>posted {{ post.updated | timesince }}
-                            ago</small></li>
                         <li class="list-group-item">{{ post.description }}</li>
                         <li class="list-group-item">
-                            Comments:
                             {% for comment in post.comments.all %}
                             <div>
                                 <small>
@@ -75,21 +47,46 @@
                                 </small>
                             </div>
                             {% endfor %}
+                            <br>
+                            <button class="btn btn-sm btn-warning rounded-pill"
+                                    hx-get="{% url 'create-comment' post.id %}"
+                                    hx-target="#dialog">
+                                add comment...
+                            </button>
                         </li>
                     </ul>
                     <div class="card-body">
-                        <a href="#" class="card-link">Like</a>
-                        <button class="btn btn-sm btn-primary rounded-pill" hx-get="{% url 'create-comment' post.id %}"
-                                hx-target="#dialog">
-                            Comment
-                        </button>
+                        <div>{% include "base/likes_area.html" %}</div>
                     </div>
                 </div>
             </div>
             {% endfor %}
         </div>
-        <div class="border border-warning" style="width: 650px; height: 391px;">
-            {{ full_map | safe }}
+        <div class="col order-xl-2 order-lg-1 order-md-1 order-sm-1 mb-4">
+            <form action="{% url 'home' %}">
+                <input class="form-control border-warning rounded-pill pr-5"
+                       type="text" name="q" style="border: 3px solid; background-color:black;"
+                       placeholder="Search Posts..."/>
+            </form>
+            <hr class="bg-info border-2 border-top border-warning">
+            {% if user.is_authenticated %}
+            <button type="button" class="btn btn-success rounded-pill" hx-get="{% url 'create-post' %}"
+                    hx-target="#dialog">
+                Add a post
+            </button>
+            {% endif %}
+            <span>
+        <a class="btn btn-warning rounded-pill" href="{% url 'home' %}">
+            All
+        </a>
+        {% for category in categories %}
+        <a class="btn btn-warning rounded-pill" href="{% url 'home' %}?q={{category.name}}">{{category}}</a>
+        {% endfor %}
+    </span>
+            <hr>
+            <div class="border border-warning" style="width: 650px; height: 391px;">
+                {{ full_map | safe }}
+            </div>
         </div>
     </div>
 
@@ -97,5 +94,6 @@
         <div id="dialog" class="modal-dialog modal-md" hx-target="this"></div>
         <script src="{% static 'dialog.js' %}"></script>
     </div>
+    <br>
 </div>
 {% endblock %}
