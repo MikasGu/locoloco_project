@@ -15,4 +15,6 @@ urlpatterns = [
 
     path('create-comment/<str:pk>', views.create_comment, name='create-comment'),
     path('like/<str:pk>', views.like_post, name='like_post'),
+
+    path('full-map', views.full_map, name='full-map'),
 ]

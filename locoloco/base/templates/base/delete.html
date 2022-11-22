@@ -1,12 +1,10 @@
-{% extends 'main.html' %}
-
-{% block content %}
-
-<form method="POST" action="">
-    {% csrf_token %}
-    <p>Are you sure you want to delete "{{obj}}"</p>
-    <a href="{{request.META.HTTP_REFERER}}">Go back</a>
-    <input type="submit" value="Confirm">
+<form hx-post="{{ request.path }}" style="border-radius: 25px;" class="modal-content" enctype="multipart/form-data">
+    <div class="modal-body">
+        {% csrf_token %}
+        <p>Are you sure you want to delete "{{obj}}"</p>
+    </div>
+    <div class="modal-footer">
+        <a href="{{request.META.HTTP_REFERER}}">Go back</a>
+        <input type="submit" value="Confirm">
+    </div>
 </form>
-
-{% endblock %}

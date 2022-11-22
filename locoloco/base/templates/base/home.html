@@ -20,7 +20,8 @@
                             hx-target="#dialog">
                         <i class="bi bi-pencil"></i>
                     </button>
-                    <a class="btn btn-sm btn-danger rounded-pill" href="{% url 'delete-post' post.id %}">
+                    <a href="" class="btn btn-sm btn-danger rounded-pill" hx-get="{% url 'delete-post' post.id %}"
+                       hx-target="#dialog">
                         <i class="bi bi-trash"></i>
                     </a>
                     {% endif %}
@@ -28,7 +29,7 @@
                         </span>
                     </div>
                     {% if post.photo %}
-                    <div style="height: 300px; overflow-y: scroll">
+                    <div style="height: 300px; overflow-y: scroll;">
                         <img src="{{ post.photo.url }}" class="card-img-top img-thumbnail">
                     </div>
                     {% endif %}

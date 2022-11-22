@@ -21,7 +21,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
 </head>
 
-<body id="content" style="background-color:black" hx-trigger="postListChanged from:body" hx-get="{% url 'home' %}" hx-target="this">
+<body style="background-color:black" hx-trigger="postListChanged from:body" hx-get="{% url 'home' %}"
+      hx-target="this">
 {% include 'navbar.html' %}
 <div class="main">
     {% if messages %}
@@ -40,9 +41,9 @@ $(document).ready(function(){
 });
 </script>
 <script>
-        document.body.addEventListener('htmx:configRequest', (e) => {
-          e.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';
-          })
+document.body.addEventListener('htmx:configRequest', (e) => {
+e.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';
+})
 </script>
 </body>
 </html>

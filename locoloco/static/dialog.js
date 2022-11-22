@@ -16,7 +16,7 @@
     }
   })
 
-  htmx.on("hidden.bs.modal", () => {
+  htmx.on("hidden.bs.modal", (e) => {
     document.getElementById("dialog").innerHTML = ""
   })
 })()

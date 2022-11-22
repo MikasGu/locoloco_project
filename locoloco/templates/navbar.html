@@ -25,6 +25,10 @@
            hx-target="#dialog">
             <i class="bi bi-pencil"></i>
         </a>
+        <hr>
+        <a href="{% url 'full-map' %}" data-toggle="tooltip" title="Expand map">
+            <i class="bi bi-arrows-fullscreen"></i>
+        </a>
         {% else %}
         <a href="" data-toggle="tooltip" title="Log in" hx-get="{% url 'login' %}"
            hx-target="#dialog">

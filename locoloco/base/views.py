@@ -12,6 +12,12 @@ import folium
 from ipware import get_client_ip
 
 
+def split_location_string(post_location):
+    coords_list = list(post_location)
+    coords_list.reverse()
+    return coords_list
+
+
 def login_page(request):
     page = 'login'
     if request.user.is_authenticated:
@@ -76,11 +82,6 @@ def home(request):
     comment_form = CommentForm()
     post_form = PostForm()
 
-    def split_location_string(post_location):
-        coords_list = list(post_location)
-        coords_list.reverse()
-        return coords_list
-
     maps = {}
     for post in posts:
         m = folium.Map(width=438,
@@ -96,13 +97,13 @@ def home(request):
                           popup=
                           f'<img src="media/{post.photo}" style="height: 100px;">'
                           f'<p>{post.name}</p>',
-                          icon=folium.Icon(color='blue', icon='trophy', prefix='fa')).add_to(m)
+                          icon=folium.Icon(color='blue', icon='university', prefix='fa')).add_to(m)
         if post.category_id == 2:
             folium.Marker(split_location_string(post.location),
                           popup=
                           f'<img src="media/{post.photo}" style="height: 100px;">'
                           f'<p>{post.name}</p>',
-                          icon=folium.Icon(color='green', icon='university', prefix='fa')).add_to(m)
+                          icon=folium.Icon(color='green', icon='trophy', prefix='fa')).add_to(m)
         if post.category_id == 3:
             folium.Marker(split_location_string(post.location),
                           popup=
@@ -117,7 +118,7 @@ def home(request):
 
     m2 = folium.Map(
         location=[54.68, 25.27],
-        zoom_start=13,
+        zoom_start=12,
         tiles='https://tile.thunderforest.com/mobile-atlas/{z}/{x}/{y}.png?apikey=a5928b37b24b4d5fba800722daa1c9aa',
         attr='s',
         control_scale=True,
@@ -128,13 +129,13 @@ def home(request):
                           popup=
                           f'<img src="media/{post.photo}" style="height: 100px;">'
                           f'<p>{post.name}</p>',
-                          icon=folium.Icon(color='blue', icon='trophy', prefix='fa')).add_to(m2)
+                          icon=folium.Icon(color='blue', icon='university', prefix='fa')).add_to(m2)
         if post.category_id == 2:
             folium.Marker(split_location_string(post.location),
                           popup=
                           f'<img src="media/{post.photo}" style="height: 100px;">'
                           f'<p>{post.name}</p>',
-                          icon=folium.Icon(color='green', icon='university', prefix='fa')).add_to(m2)
+                          icon=folium.Icon(color='green', icon='trophy', prefix='fa')).add_to(m2)
         if post.category_id == 3:
             folium.Marker(split_location_string(post.location),
                           popup=
@@ -193,7 +194,7 @@ def delete_post(request, pk):
 
     if request.method == 'POST':
         post_instance.delete()
-        return redirect('home')
+        return HttpResponse(headers={'HX-Trigger': 'postListChanged'}, status=204)
     return render(request, 'base/delete.html', {'obj': post_instance})
 
 
@@ -221,3 +222,38 @@ def like_post(request, pk):
             instance.likes.remove(request.user)
             instance.save()
             return render(request, 'base/likes_area.html', context={'post': instance})
+
+
+def full_map(request):
+    posts = Post.objects.all()
+    m = folium.Map(
+        width=1000,
+        height=1000,
+        location=[54.68, 25.27],
+        zoom_start=12,
+        tiles='https://tile.thunderforest.com/mobile-atlas/{z}/{x}/{y}.png?apikey=a5928b37b24b4d5fba800722daa1c9aa',
+        attr='s',
+        control_scale=True,
+        attributionControl=True)
+    for post in posts:
+        if post.category_id == 1:
+            folium.Marker(split_location_string(post.location),
+                          popup=
+                          f'<img src="media/{post.photo}" style="height: 100px;">'
+                          f'<p>{post.name}</p>',
+                          icon=folium.Icon(color='blue', icon='university', prefix='fa')).add_to(m)
+        if post.category_id == 2:
+            folium.Marker(split_location_string(post.location),
+                          popup=
+                          f'<img src="media/{post.photo}" style="height: 100px;">'
+                          f'<p>{post.name}</p>',
+                          icon=folium.Icon(color='green', icon='trophy', prefix='fa')).add_to(m)
+        if post.category_id == 3:
+            folium.Marker(split_location_string(post.location),
+                          popup=
+                          f'<img src="media/{post.photo}" style="height: 100px;">'
+                          f'<p>{post.name}</p>',
+                          icon=folium.Icon(color='red', icon='paint-brush', prefix='fa')).add_to(m)
+
+    m = m._repr_html_()
+    return render(request, 'base/full_map.html', {'map': m})

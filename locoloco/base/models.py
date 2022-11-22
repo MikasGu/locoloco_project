@@ -35,10 +35,10 @@ class Post(models.Model):
         super().save(*args, **kwargs)
         img = Image.open(self.photo.path)
 
-        if img.height > 300 or img.width > 300:
-            output_size = (300, 300)
+        if img.height > 557 or img.width > 418:
+            output_size = (418, 557)
             img.thumbnail(output_size)
-            quality_val = 90
+            quality_val = 99
             img.save(self.photo.path, quality=quality_val)
 
     class Meta:
