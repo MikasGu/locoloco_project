@@ -13,7 +13,7 @@
              object-position: top;
              border: 3px solid #ffc107; margin-left:5px;">
         <hr>
-        <a href="#" data-toggle="tooltip" title="Hi, {{request.user}}!">
+        <a href="{% url 'profile' request.user.id %}" data-toggle="tooltip" title="Hi, {{request.user}}!">
             <i class="bi bi-person-square"></i>
         </a>
         <hr>

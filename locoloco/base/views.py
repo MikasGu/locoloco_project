@@ -111,6 +111,13 @@ def home(request):
                           f'<p>{post.name}</p>',
                           icon=folium.Icon(color='red', icon='paint-brush', prefix='fa')).add_to(m)
 
+        if post.category_id == 4:
+            folium.Marker(split_location_string(post.location),
+                          popup=
+                          f'<img src="media/{post.photo}" style="height: 100px;">'
+                          f'<p>{post.name}</p>',
+                          icon=folium.Icon(color='black', icon='lightbulb-o', prefix='fa')).add_to(m)
+
         m = m._repr_html_()
         maps.update({post.id: m})
 
@@ -142,6 +149,13 @@ def home(request):
                           f'<img src="media/{post.photo}" style="height: 100px;">'
                           f'<p>{post.name}</p>',
                           icon=folium.Icon(color='red', icon='paint-brush', prefix='fa')).add_to(m2)
+
+        if post.category_id == 4:
+            folium.Marker(split_location_string(post.location),
+                          popup=
+                          f'<img src="media/{post.photo}" style="height: 100px;">'
+                          f'<p>{post.name}</p>',
+                          icon=folium.Icon(color='black', icon='lightbulb-o', prefix='fa')).add_to(m2)
 
     m2 = m2._repr_html_()
 
@@ -227,8 +241,6 @@ def like_post(request, pk):
 def full_map(request):
     posts = Post.objects.all()
     m = folium.Map(
-        width=1000,
-        height=1000,
         location=[54.68, 25.27],
         zoom_start=12,
         tiles='https://tile.thunderforest.com/mobile-atlas/{z}/{x}/{y}.png?apikey=a5928b37b24b4d5fba800722daa1c9aa',
@@ -257,3 +269,10 @@ def full_map(request):
 
     m = m._repr_html_()
     return render(request, 'base/full_map.html', {'map': m})
+
+
+def profile(request, pk):
+    posts = Post.objects.filter(poster=pk)
+    user = User.objects.filter(id=pk)
+    context = {'posts': posts, 'user': user}
+    return render(request, 'base/profile.html', context)

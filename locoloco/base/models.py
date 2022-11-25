@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
 from PIL import Image
-from location_field.models.plain import PlainLocationField
 from mapbox_location_field.models import LocationField
 
 

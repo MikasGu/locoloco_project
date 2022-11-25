@@ -8,13 +8,13 @@
         <div class="col order-xl-1 order-lg-2 order-md-2 order-sm-2">
             {% for post in posts %}
             <div class="mb-4">
-                <div class="card border-light" style="width: 450px; border-radius: 25px;">
+                <div class="card" style="width: 450px; border-radius: 25px;">
                     <div class="card-body" style="border-style: none;">
                         <img class="rounded-circle"
                              src="{{post.poster.profile.image.url}}"
                              height="50px" width="50px"
                              style="object-fit:cover; object-position: top; border: 3px solid #ffc107 ">
-                        <span>@{{post.poster.username}}
+                        <span><a href="{% url 'profile' post.poster.id %}">{{post.poster.username}}</a>
                     {% if request.user == post.poster %}
                     <button class="btn btn-sm btn-primary rounded-pill" hx-get="{% url 'update-post' post.id %}"
                             hx-target="#dialog">
@@ -44,7 +44,7 @@
                                          src="{{comment.user.profile.image.url}}"
                                          height="25px" width="25px"
                                          style="object-fit:cover; object-position: top;">
-                                    @{{comment.user}}: {{comment}}
+                                    <a href="{% url 'profile' comment.user.id %}">@{{comment.user}}</a>: {{comment}}
                                 </small>
                             </div>
                             {% endfor %}
@@ -71,17 +71,50 @@
             </form>
             <hr class="bg-info border-2 border-top border-warning">
             {% if user.is_authenticated %}
-            <button type="button" class="btn btn-success rounded-pill" hx-get="{% url 'create-post' %}"
+            <button type="button" class="btn btn-success rounded-pill btn-lg" hx-get="{% url 'create-post' %}"
                     hx-target="#dialog">
                 Add a post
             </button>
             {% endif %}
             <span>
-        <a class="btn btn-warning rounded-pill" href="{% url 'home' %}">
-            All
+        <a class="btn btn-warning rounded-pill btn-lg"
+           href="{% url 'home' %}"
+           data-toggle="tooltip" title="All posts">
+            <i class="fa fa-duotone fa-earth-europe"></i>
         </a>
         {% for category in categories %}
-        <a class="btn btn-warning rounded-pill" href="{% url 'home' %}?q={{category.name}}">{{category}}</a>
+
+        {% if category.id == 1 %}
+                <a class="btn btn-info btn-lg rounded-pill"
+                   href="{% url 'home' %}?q={{category.name}}"
+                   data-toggle="tooltip" title="Architecture">
+                    <i class="fa fa-university"></i>
+                </a>
+        {% endif %}
+
+        {% if category.id == 2 %}
+                <a class="btn btn-success btn-lg rounded-pill"
+                   href="{% url 'home' %}?q={{category.name}}"
+                   data-toggle="tooltip" title="Sculpture">
+                    <i class="fa fa-trophy"></i>
+                </a>
+        {% endif %}
+
+        {% if category.id == 3 %}
+                <a class="btn btn-danger btn-lg rounded-pill"
+                   href="{% url 'home' %}?q={{category.name}}"
+                   data-toggle="tooltip" title="Art">
+                    <i class="fa fa-paint-brush"></i>
+                </a>
+        {% endif %}
+
+        {% if category.id == 4 %}
+                <a class="btn btn-secondary btn-lg rounded-pill"
+                   href="{% url 'home' %}?q={{category.name}}"
+                   data-toggle="tooltip" title="Random">
+                    <i class="fa fa-lightbulb-o"></i>
+                </a>
+        {% endif %}
         {% endfor %}
     </span>
             <hr>
