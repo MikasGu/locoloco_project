@@ -36,15 +36,22 @@
     {% block content %}
     {% endblock %}
 </div>
+
+<div id="modal" class="modal fade">
+    <div id="dialog" class="modal-dialog modal-md" hx-target="this"></div>
+    <script src="{% static 'dialog.js' %}"></script>
+</div>
 <script>
 $(document).ready(function(){
   $('[data-toggle="tooltip"]').tooltip();
 });
+
 </script>
 <script>
 document.body.addEventListener('htmx:configRequest', (e) => {
 e.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';
 })
+
 </script>
 </body>
 </html>

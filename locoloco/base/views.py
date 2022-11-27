@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from .models import Post, Category, Profile
-from .forms import PostForm, CommentForm
+from .forms import PostForm, CommentForm, ProfileForm
 from django.db.models import Q
 from django.contrib.auth.models import User
 from django.contrib import messages
@@ -276,3 +276,16 @@ def profile(request, pk):
     user = User.objects.filter(id=pk)
     context = {'posts': posts, 'user': user}
     return render(request, 'base/profile.html', context)
+
+
+def edit_profile(request, pk):
+    profile_instance = User.objects.get(id=pk)
+    form = ProfileForm(instance=profile_instance)
+    if request.method == 'POST':
+        form = ProfileForm(request.POST, instance=profile_instance)
+        if form.is_valid():
+            form.save()
+            return HttpResponse(status=204)
+
+    context = {'form': form}
+    return render(request, 'base/profile_form.html', context)

@@ -14,7 +14,7 @@
                              src="{{post.poster.profile.image.url}}"
                              height="50px" width="50px"
                              style="object-fit:cover; object-position: top; border: 3px solid #ffc107 ">
-                        <span><a href="{% url 'profile' post.poster.id %}">{{post.poster.username}}</a>
+                        <span><a href="{% url 'profile' post.poster.id %}">@{{post.poster.username}}</a>
                     {% if request.user == post.poster %}
                     <button class="btn btn-sm btn-primary rounded-pill" hx-get="{% url 'update-post' post.id %}"
                             hx-target="#dialog">
@@ -122,11 +122,6 @@
                 {{ full_map | safe }}
             </div>
         </div>
-    </div>
-
-    <div id="modal" class="modal fade">
-        <div id="dialog" class="modal-dialog modal-md" hx-target="this"></div>
-        <script src="{% static 'dialog.js' %}"></script>
     </div>
     <br>
 </div>
