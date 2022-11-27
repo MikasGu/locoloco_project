@@ -20,8 +20,11 @@
         <br>
         <div class="container">
             <p>Haven't signed up yet?</p>
+            <span>
             <a href="#" hx-get="{% url 'register' %}"
                hx-target="#dialog">Sign up</a>
+            <a href="{% url 'password_reset' %}">Forgot password?</a>
+            </span>
         </div>
     </div>
 </form>
