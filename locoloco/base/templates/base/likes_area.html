@@ -1,0 +1,12 @@
+<div class="container" id="likesarea" role="group">
+    <p>{{ post.likes.count }} likes
+        <a hx-post="{% url 'like_post' post.id %}" id="like-button"
+                hx-target="#likesarea" hx-swap="outerHTML">
+            {% if request.user in post.likes.all %}
+            <i class="bi bi-lungs"></i>
+            {% else %}
+            <i class="bi bi-lungs-fill"></i>
+            {% endif %}
+        </a>
+    </p>
+</div>

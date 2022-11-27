@@ -1,0 +1,76 @@
+{% extends 'main.html' %}
+{% block content %}
+<div class="row">
+    <div class="col">
+        <br>
+        {% for user in user %}
+        <div class="card bg-warning" style="width: 450px; border-radius: 25px;">
+            <div class="card-img-top text-center">
+                <br>
+                <img src="{{user.profile.image.url}}"
+                     class="rounded-circle"
+                     height="200px" width="200px"
+                     style="object-fit:cover; object-position: top; border: 3px solid white ">
+            </div>
+            <div class="card-body text-center">
+                <b>@{{user}}</b>
+                {% if user == request.user %}
+                <a href="" class="btn btn-sm btn-primary rounded-pill" hx-get="{% url 'profile-form' user.id %}"
+                   hx-target="#dialog">
+                    <i class="bi bi-gear"></i>
+                </a>
+                {% endif %}
+            </div>
+            <table class="table table-borderless table-hover">
+                <tbody>
+                <tr>
+                    <td><b>Full name:</b></td>
+                    <td>{{user.first_name}} {{user.last_name}}</td>
+                </tr>
+                <tr>
+                    <td><b>Email:</b></td>
+                    <td>{{user.email}}</td>
+                </tr>
+                <tr>
+                    <td><b>Posts count:</b></td>
+                    <td>{{posts.count}}</td>
+                </tr>
+                <tr>
+                    <td><b>Last active:</b></td>
+                    <td>{{user.last_login}}</td>
+                </tr>
+                <tr>
+                    <td><b>Date joined:</b></td>
+                    <td>{{user.date_joined}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="col order-xl-1 order-lg-2 order-md-2 order-sm-2">
+        <br>
+        <div class="card bg-warning" style="width: 450px; border-radius: 25px;">
+            <div class="card-header text-center">
+                <h1><b>POSTS</b></h1>
+            </div>
+            <ul class="list-group list-group-flush">
+                {% for post in posts %}
+                <li class="list-group-item">
+                    <span>
+                        <a href="{% url 'home' %}?q={{post.name}} ">{{post.description}}</a>
+                        <i>{{post.created | date}}</i>
+                    </span>
+
+                    <img src="{{ post.photo.url }}"
+                         class="card-img-top img-thumbnail"
+                         height="100px"
+                         width="100px">
+                </li>
+                {% endfor %}
+                <br>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

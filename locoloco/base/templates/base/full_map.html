@@ -1,0 +1,10 @@
+{% extends 'main.html' %}
+
+{% block content %}
+<br>
+<br>
+<div hx-post="{{ request.path }}" style="width: 1000px; height: 1000px;"
+     class="container">
+        {{map | safe }}
+</div>
+{% endblock %}
