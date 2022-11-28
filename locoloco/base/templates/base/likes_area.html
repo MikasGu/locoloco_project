@@ -3,9 +3,9 @@
         <a hx-post="{% url 'like_post' post.id %}" id="like-button"
                 hx-target="#likesarea" hx-swap="outerHTML">
             {% if request.user in post.likes.all %}
-            <i class="bi bi-lungs"></i>
+            <i class="bi bi-heart-fill"></i>
             {% else %}
-            <i class="bi bi-lungs-fill"></i>
+            <i class="bi bi-heart"></i>
             {% endif %}
         </a>
     </p>

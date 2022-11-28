@@ -1,39 +1,49 @@
 {% load crispy_forms_tags %}
 {% if page == 'login' %}
-<form hx-post="{{ request.path }}" style="border-radius: 25px;" class="modal-content" enctype="multipart/form-data">
+<form hx-post="{{ request.path }}"
+      style="border-radius: 25px; background-color:#E4A11B; border-color: black; text-align: center;"
+      class="modal-content"
+      enctype="multipart/form-data">
     {% csrf_token %}
-    <div class="modal-header">
+    <br>
+    <div class="container">
         <h5 class="modal-title">Log in</h5>
     </div>
     <div class="modal-body">
         <div class="container">
-            <label>Username: </label>
-            <input type="text" name="username" placeholder="Enter Username">
-        </div>
-        <div class="container">
-            <label>Password: </label>
-            <input type="password" name="password" placeholder="Enter Password">
-        </div>
-        <div class="container">
-            <input type="submit" value="Login" class="btn btn-md btn-success rounded-pill">
+            <input class="form-control border-warning rounded-pill pr-5"
+                   type="text" name="username"
+                   placeholder="Enter Username">
         </div>
         <br>
         <div class="container">
-            <p>Haven't signed up yet?</p>
+            <input class="form-control border-warning rounded-pill pr-5"
+                   type="password" name="password"
+                   placeholder="Enter Password">
+        </div>
+        <br>
+        <div class="container">
+            <input type="submit" value="Login" class="btn btn-lg btn-success rounded-pill">
+        </div>
+        <br>
+        <div class="container">
+            <p><i>Haven't signed up yet?</i></p>
             <span>
-            <a href="#" hx-get="{% url 'register' %}"
-               hx-target="#dialog">Sign up</a>
-            <a href="{% url 'password_reset' %}">Forgot password?</a>
+            <a class="btn btn-info rounded-pill" href="#" hx-get="{% url 'register' %}"
+               hx-target="#dialog">Sign up!</a>
+            <a class="btn btn-info rounded-pill" href="{% url 'password_reset' %}">Forgot password?</a>
             </span>
         </div>
     </div>
 </form>
 {% else %}
-<form hx-post="{{ request.path }}" style="border-radius: 25px;" class="modal-content" enctype="multipart/form-data">
-    <div class="modal-header">
-        <h5 class="modal-title">Register</h5>
-    </div>
+<form hx-post="{{ request.path }}"
+      style="border-radius: 25px; background-color:#E4A11B; border-color: black; text-align: center;"
+      class="modal-content"
+      enctype="multipart/form-data">
     <div class="modal-body">
+        <h5 class="modal-title">Register</h5>
+        <br>
         {% csrf_token %}
         {{form | crispy}}
     </div>

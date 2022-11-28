@@ -93,7 +93,8 @@
         {% endif %}
 
         {% if category.id == 2 %}
-                <a class="btn btn-success btn-lg rounded-pill"
+                <a class="btn btn-lg rounded-pill"
+                   style="background-color: #71af26; color:white"
                    href="{% url 'home' %}?q={{category.name}}"
                    data-toggle="tooltip" title="Sculpture">
                     <i class="fa fa-trophy"></i>
@@ -102,6 +103,7 @@
 
         {% if category.id == 3 %}
                 <a class="btn btn-danger btn-lg rounded-pill"
+                   style="background-color: #d63e2a; color:white"
                    href="{% url 'home' %}?q={{category.name}}"
                    data-toggle="tooltip" title="Art">
                     <i class="fa fa-paint-brush"></i>
@@ -110,6 +112,7 @@
 
         {% if category.id == 4 %}
                 <a class="btn btn-secondary btn-lg rounded-pill"
+                   style="background-color: #303030; color:white"
                    href="{% url 'home' %}?q={{category.name}}"
                    data-toggle="tooltip" title="Random">
                     <i class="fa fa-lightbulb-o"></i>

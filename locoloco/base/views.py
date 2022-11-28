@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 
 from .models import Post, Category, Profile
-from .forms import PostForm, CommentForm, ProfileForm
+from .forms import PostForm, CommentForm, ProfileForm, ProfilePictureForm
 from django.db.models import Q
 from django.contrib.auth.models import User
 from django.contrib import messages
@@ -223,12 +223,13 @@ def create_comment(request, pk):
         form = CommentForm(request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponse(status=204, headers={'HX-Trigger': 'postListChanged'})
+            return HttpResponse(headers={'HX-Trigger': 'postListChanged'}, status=204)
 
     context = {'comment_form': form}
     return render(request, 'base/comment_form.html', context)
 
 
+@login_required(login_url='login')
 def like_post(request, pk):
     if request.method == "POST":
         instance = Post.objects.get(id=pk)
@@ -287,6 +288,19 @@ def edit_profile(request, pk):
     form = ProfileForm(instance=profile_instance)
     if request.method == 'POST':
         form = ProfileForm(request.POST, instance=profile_instance)
+        if form.is_valid():
+            form.save()
+            return HttpResponse(status=204)
+
+    context = {'form': form}
+    return render(request, 'base/profile_form.html', context)
+
+
+def edit_profile_picture(request, pk):
+    profile_instance = Profile.objects.get(user_id=pk)
+    form = ProfilePictureForm(instance=profile_instance)
+    if request.method == 'POST':
+        form = ProfilePictureForm(request.POST, request.FILES, instance=profile_instance)
         if form.is_valid():
             form.save()
             return HttpResponse(status=204)

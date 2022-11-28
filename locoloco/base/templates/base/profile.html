@@ -15,9 +15,21 @@
             <div class="card-body text-center">
                 <b>@{{user}}</b>
                 {% if user == request.user %}
-                <a href="" class="btn btn-sm btn-primary rounded-pill" hx-get="{% url 'profile-form' user.id %}"
+                <a href=""
+                   class="btn btn-sm btn-info rounded-pill"
+                   data-toggle="tooltip"
+                   title="Edit Profile info"
+                   hx-get="{% url 'profile-form' user.id %}"
                    hx-target="#dialog">
                     <i class="bi bi-gear"></i>
+                </a>
+                <a href=""
+                   class="btn btn-sm btn-info rounded-pill"
+                   data-toggle="tooltip"
+                   title="Change profile photo"
+                   hx-get="{% url 'profile-picture-form' user.id %}"
+                   hx-target="#dialog">
+                    <i class="bi bi-camera-fill"></i>
                 </a>
                 {% endif %}
             </div>
@@ -58,7 +70,12 @@
                 {% for post in posts %}
                 <li class="list-group-item">
                     <span>
-                        <a href="{% url 'home' %}?q={{post.name}} ">{{post.description}}</a>
+                        <a class="btn btn-success rounded-pill mb-2"
+                           data-toggle="tooltip"
+                           title="See post!"
+                           href="{% url 'home' %}?q={{post.name}} ">
+                            {{post.description}}
+                        </a>
                         <i>{{post.created | date}}</i>
                     </span>
 
