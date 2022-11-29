@@ -94,7 +94,7 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-MAPBOX_KEY = "pk.eyJ1IjoibWlrYXNndSIsImEiOiJjbGFqbWV0MmowZTYwM25zOWVudmRsZzJqIn0.8c8Z_95paOrvaa0bAZARVg"
+MAPBOX_KEY = str(os.getenv('MAPBOX_KEY'))
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'

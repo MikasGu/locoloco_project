@@ -59,3 +59,4 @@ class ProfilePictureForm(ModelForm):
     class Meta:
         model = Profile
         fields = ['image']
+
