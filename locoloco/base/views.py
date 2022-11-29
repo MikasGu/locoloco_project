@@ -75,7 +75,8 @@ def home(request):
     posts = Post.objects.filter(
         Q(category__name__icontains=q) |
         Q(name__icontains=q) |
-        Q(poster__username__icontains=q)
+        Q(poster__username__icontains=q) |
+        Q(description__exact=q)
     )
 
     # Needed for live server deployment
@@ -88,11 +89,11 @@ def home(request):
 
     maps = {}
     for post in posts:
-        m = folium.Map(width=438,
-                       height=263,
+        m = folium.Map(width=435,
+                       height=260,
                        location=split_location_string(post.location),
                        zoom_start=15,
-                       tiles='https://tile.thunderforest.com/mobile-atlas/{z}/{x}/{y}.png?apikey=a5928b37b24b4d5fba800722daa1c9aa',
+                       tiles='https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png?api_key=65191b6c-f975-4606-a5a8-d82ebd71c2cb',
                        attr='s',
                        control_scale=True,
                        attributionControl=False)
@@ -120,7 +121,7 @@ def home(request):
                           popup=
                           f'<img src="media/{post.photo}" style="height: 100px;">'
                           f'<p>{post.name}</p>',
-                          icon=folium.Icon(color='black', icon='lightbulb-o', prefix='fa')).add_to(m)
+                          icon=folium.Icon(color='purple', icon='lightbulb-o', prefix='fa')).add_to(m)
 
         m = m._repr_html_()
         maps.update({post.id: m})
@@ -130,7 +131,7 @@ def home(request):
     m2 = folium.Map(
         location=[54.68, 25.27],
         zoom_start=12,
-        tiles='https://tile.thunderforest.com/mobile-atlas/{z}/{x}/{y}.png?apikey=a5928b37b24b4d5fba800722daa1c9aa',
+        tiles='https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png?api_key=65191b6c-f975-4606-a5a8-d82ebd71c2cb',
         attr='s',
         control_scale=True,
         attributionControl=True)
@@ -159,7 +160,7 @@ def home(request):
                           popup=
                           f'<img src="media/{post.photo}" style="height: 100px;">'
                           f'<p>{post.name}</p>',
-                          icon=folium.Icon(color='black', icon='lightbulb-o', prefix='fa')).add_to(m2)
+                          icon=folium.Icon(color='purple', icon='lightbulb-o', prefix='fa')).add_to(m2)
 
     m2 = m2._repr_html_()
 
@@ -248,7 +249,7 @@ def full_map(request):
     m = folium.Map(
         location=[54.68, 25.27],
         zoom_start=12,
-        tiles='https://tile.thunderforest.com/mobile-atlas/{z}/{x}/{y}.png?apikey=a5928b37b24b4d5fba800722daa1c9aa',
+        tiles='https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png?api_key=65191b6c-f975-4606-a5a8-d82ebd71c2cb',
         attr='s',
         control_scale=True,
         attributionControl=True)
@@ -271,7 +272,12 @@ def full_map(request):
                           f'<img src="media/{post.photo}" style="height: 100px;">'
                           f'<p>{post.name}</p>',
                           icon=folium.Icon(color='red', icon='paint-brush', prefix='fa')).add_to(m)
-
+        if post.category_id == 4:
+            folium.Marker(split_location_string(post.location),
+                          popup=
+                          f'<img src="media/{post.photo}" style="height: 100px;">'
+                          f'<p>{post.name}</p>',
+                          icon=folium.Icon(color='purple', icon='lightbulb-o', prefix='fa')).add_to(m)
     m = m._repr_html_()
     return render(request, 'base/full_map.html', {'map': m})
 

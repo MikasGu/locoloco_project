@@ -8,7 +8,7 @@
         <div class="col order-xl-1 order-lg-2 order-md-2 order-sm-2">
             {% for post in posts %}
             <div class="mb-4">
-                <div class="card" style="width: 450px; border-radius: 25px;">
+                <div class="card" style="width: 450px; border: 2px solid #ffc107; border-radius: 25px;">
                     <div class="card-body" style="border-style: none;">
                         <img class="rounded-circle"
                              src="{{post.poster.profile.image.url}}"
@@ -102,7 +102,7 @@
         {% endif %}
 
         {% if category.id == 3 %}
-                <a class="btn btn-danger btn-lg rounded-pill"
+                <a class="btn btn-lg rounded-pill"
                    style="background-color: #d63e2a; color:white"
                    href="{% url 'home' %}?q={{category.name}}"
                    data-toggle="tooltip" title="Art">
@@ -111,8 +111,8 @@
         {% endif %}
 
         {% if category.id == 4 %}
-                <a class="btn btn-secondary btn-lg rounded-pill"
-                   style="background-color: #303030; color:white"
+                <a class="btn btn-lg rounded-pill"
+                   style="background-color: #d051b7; color:white"
                    href="{% url 'home' %}?q={{category.name}}"
                    data-toggle="tooltip" title="Random">
                     <i class="fa fa-lightbulb-o"></i>

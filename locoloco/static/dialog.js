@@ -8,7 +8,7 @@
     }
   })
 
-  htmx.on("htmx:afterSwap", (e) => {
+  htmx.on("htmx:beforeSwap", (e) => {
     // Empty response targeting #dialog => hide the modal
     if (e.detail.target.id == "dialog" && !e.detail.xhr.response) {
       modal.hide()

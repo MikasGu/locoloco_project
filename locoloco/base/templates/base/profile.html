@@ -73,7 +73,7 @@
                         <a class="btn btn-success rounded-pill mb-2"
                            data-toggle="tooltip"
                            title="See post!"
-                           href="{% url 'home' %}?q={{post.name}} ">
+                           href="{% url 'home' %}?q={{post.description}} ">
                             {{post.description}}
                         </a>
                         <i>{{post.created | date}}</i>

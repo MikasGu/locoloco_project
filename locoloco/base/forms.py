@@ -39,7 +39,11 @@ class CommentForm(ModelForm):
         model = Comment
         fields = '__all__'
         widgets = {'post': HiddenInput(),
-                   'user': HiddenInput()}
+                   'user': HiddenInput(),
+                   'body': TextInput(attrs={
+                       'placeholder': 'Comment',
+                       'class': 'form-control rounded-pill mb-2'}),
+                   }
         labels = {
             'body': '',
         }
